@@ -21,24 +21,28 @@ import javax.swing.JComponent;
 import javax.imageio.ImageIO;
 
 import java.util.Scanner;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-public class Halftone extends JComponent throws IOException {
+public class Halftone extends JComponent {
     private static final long serialVersionUID = 1l;
 
     private BufferedImage image;
     private static final double SQ2 = Math.sqrt(2);
     private static final double SCALE = 3.0;
-    private static final double DISP_SCALE = 1.5;
+    private static final double DISP_SCALE = 1.2;
 
-    public static void main(String[] args) {
+    public static Scanner scn = new Scanner(System.in);
+    public static PrintWriter fileOut;
+
+    public static void main(String[] args) throws IOException {
         JFrame frame = new JFrame();
         frame.add(new Halftone());
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+        
+        fileOut = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfImage.txt");
     }
 
     public Halftone() {
@@ -53,8 +57,8 @@ public class Halftone extends JComponent throws IOException {
 
     private void setDefaultImage()  {
         try {
-            // URL res = Halftone.class.getResource("/halftone/woman0.png");
-            URL res = Halftone.class.getResource("/halftone/1.png");
+            URL res = Halftone.class.getResource("/halftone/1 (1).png");
+            // URL res = Halftone.class.getResource("/halftone/1.png");
             // URL res = Halftone.class.getResource("/halftone/lenna.png");
             setImage(ImageIO.read(res));
         } catch (java.io.IOException e) {
@@ -108,7 +112,8 @@ public class Halftone extends JComponent throws IOException {
                 g.fill(new Ellipse2D.Double((double) x * 2 - size,
                                             (double) y * 2 - size,
                                             size * 2, size * 2));
+                fileOut.println(x + " " + y);
             }
-        }
+        } fileOut.close();
     }
 }
