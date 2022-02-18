@@ -23,7 +23,6 @@ import javax.imageio.ImageIO;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.File;
 
 public class Halftone extends JComponent {
     private static final long serialVersionUID = 1l;
@@ -114,8 +113,9 @@ public class Halftone extends JComponent {
                 g.fill(new Ellipse2D.Double((double) x * 3.5 - size,
                                             (double) y * 3.6 - size,
                                             size * 3.5, size * 3.5));
+                // g.drawOval((int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
                 // fillMidpointEllipse(g, (int)(Math.ceil(x * 2 - size)), (int)(Math.ceil(y * 2 - size)), (int)(Math.ceil(size * 2)), (int)(Math.ceil(size * 2)));
-                // fillMidpointEllipse(g, (int)(Math.ceil(x * 2 - size)), (int)(Math.ceil(y * 2 - size)), (int)(Math.ceil(size * 2)), (int)(Math.ceil(size * 2)));
+                
                 if((int)(/* Math.round */(size * 2)) != 0.0f) {
                     fileOut.printf("midpointEllipse(g2, %d, %d, %d, %d);\n", (int)((double) x * 3.5 - size), (int)((double) y * 3.6 - size), (int)(size * 3.5), (int)(size * 3.5));
                     // fileOut.printf("%d %d %d %d\n", (int)((double) x * 2 - size), (int)((double) y * 2 - size), (int)(size * 2), (int)(size * 2));

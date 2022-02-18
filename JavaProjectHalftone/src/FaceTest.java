@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 //63050103 นายแก้วเพชร หนูร่วง
-public class GraphicSwing extends JPanel implements Runnable {
+public class FaceTest extends JPanel implements Runnable {
     public static BufferedImage buffer;
 
     double circleMove = 0.0f;
@@ -23,7 +23,7 @@ public class GraphicSwing extends JPanel implements Runnable {
     double velocity = 50;
     double angle = -60;
     public static void main(String[] args) throws IOException {
-		GraphicSwing m = new GraphicSwing();
+		FaceTest m = new FaceTest();
 
 		JFrame frame = new JFrame();
 		frame.add(m);
