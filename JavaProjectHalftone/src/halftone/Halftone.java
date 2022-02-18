@@ -23,6 +23,7 @@ import javax.imageio.ImageIO;
 import java.util.Scanner;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.File;
 
 public class Halftone extends JComponent {
     private static final long serialVersionUID = 1l;
@@ -36,13 +37,15 @@ public class Halftone extends JComponent {
     public static PrintWriter fileOut;
 
     public static void main(String[] args) throws IOException {
+        fileOut = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfImage.txt");
+        
         JFrame frame = new JFrame();
         frame.add(new Halftone());
         frame.pack();
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         
-        fileOut = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfImage.txt");
     }
 
     public Halftone() {
@@ -65,7 +68,6 @@ public class Halftone extends JComponent {
             System.out.println("Failed to fetch lenna.");
         }
     }
-
     public void setImage(BufferedImage display) {
         image = display;
         Dimension size = new Dimension((int) (image.getWidth() * DISP_SCALE),
@@ -86,9 +88,9 @@ public class Halftone extends JComponent {
         g.fillRect(0, 0, getWidth(), getHeight());
 
         /* Adjust the display. */
-        g.scale(getWidth() / (2.0 * image.getWidth()),
+        /* g.scale(getWidth() / (2.0 * image.getWidth()),
                 getHeight() / (2.0 * image.getHeight()));
-        g.translate(1.0, 1.0);
+        g.translate(1.0, 1.0); */
 
         /* Tune drawing parameters. */
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -109,11 +111,70 @@ public class Halftone extends JComponent {
                               + 0.11 * (c >>  0 & 0xff)) / 255.0;
                 sum = 1.0 - sum;
                 double size = sum * SQ2;
-                g.fill(new Ellipse2D.Double((double) x * 2 - size,
-                                            (double) y * 2 - size,
-                                            size * 2, size * 2));
-                fileOut.println(x + " " + y);
+                g.fill(new Ellipse2D.Double((double) x * 3.5 - size,
+                                            (double) y * 3.6 - size,
+                                            size * 3.5, size * 3.5));
+                // fillMidpointEllipse(g, (int)(Math.ceil(x * 2 - size)), (int)(Math.ceil(y * 2 - size)), (int)(Math.ceil(size * 2)), (int)(Math.ceil(size * 2)));
+                // fillMidpointEllipse(g, (int)(Math.ceil(x * 2 - size)), (int)(Math.ceil(y * 2 - size)), (int)(Math.ceil(size * 2)), (int)(Math.ceil(size * 2)));
+                if((int)(/* Math.round */(size * 2)) != 0.0f) {
+                    fileOut.printf("midpointEllipse(g2, %d, %d, %d, %d);\n", (int)((double) x * 3.5 - size), (int)((double) y * 3.6 - size), (int)(size * 3.5), (int)(size * 3.5));
+                    // fileOut.printf("%d %d %d %d\n", (int)((double) x * 2 - size), (int)((double) y * 2 - size), (int)(size * 2), (int)(size * 2));
+                }
             }
         } fileOut.close();
     }
+
+
+
+
+    public void midpointEllipse(Graphics g, int xc, int yc, int a, int b) { //a, b = radius
+        //region 1
+        int x, y, d;
+        x = 0;
+        y = b;
+        d = Math.round(b * b - a * a * b + a * a / 4);
+
+        while(b * b * x <= a * a * y) {
+            plot(g, x + xc, y + yc, 3);
+            plot(g, -x + xc, y + yc, 3);
+            plot(g, x + xc, -y + yc, 3);
+            plot(g, -x + xc, -y + yc, 3);
+
+            x++;
+            d = d + 2 * b * b * x + b * b;
+
+            if(d >= 0) {
+                y--;
+                d = d - 2 * a * a * y;
+            }
+        }
+
+        //region 2
+        x = a;
+        y = 0;
+        d = Math.round(a * a - b * b * a + b * b / 4);
+
+        while(b * b * x >= a * a * y) {
+            plot(g, x + xc, y + yc, 3);
+            plot(g, -x + xc, y + yc, 3);
+            plot(g, x + xc, -y + yc, 3);
+            plot(g, -x + xc, -y + yc, 3);
+
+            y++;
+            d = d + 2 * a * a * y + a * a;
+
+            if(d >= 0) {
+                x--;
+                d = d - 2 * b * b * x;
+            }
+        }
+    }
+    public void fillMidpointEllipse(Graphics g, int xc, int yc, int a, int b) {
+        for(int i = 0; i <= a; i++) {
+            midpointEllipse(g, xc, yc, a, b);
+        }
+    }
+    public void plot(Graphics g, int x, int y, int size) {
+		g.fillRect(x, y, size, size);
+	}
 }
