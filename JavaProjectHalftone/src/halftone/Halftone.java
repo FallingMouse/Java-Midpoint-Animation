@@ -34,13 +34,16 @@ public class Halftone extends JComponent {
 
     public static Scanner scn = new Scanner(System.in);
     public static PrintWriter fileOut;
+    public static PrintWriter fileOutOrigin;
 
     public static void main(String[] args) throws IOException {
         fileOut = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfImage.txt");
+        fileOutOrigin = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfImageOrigin.txt");
         
         JFrame frame = new JFrame();
         frame.add(new Halftone());
-        frame.pack();
+        // frame.pack();
+        frame.setSize(600, 600);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -76,14 +79,15 @@ public class Halftone extends JComponent {
         AffineTransformOp op
             = new AffineTransformOp(scale, AffineTransformOp.TYPE_BICUBIC);
         image = op.filter(image, null);
-        setPreferredSize(size);
-        setMinimumSize(size);
+        // setPreferredSize(size);
+        // setMinimumSize(size);
     }
 
     @Override
     public void paintComponent(Graphics graphics) {
         Graphics2D g = (Graphics2D) graphics;
         g.setColor(Color.WHITE);
+        // g.setColor(Color.decode("#C1C1C1"));
         g.fillRect(0, 0, getWidth(), getHeight());
 
         /* Adjust the display. */
@@ -110,18 +114,21 @@ public class Halftone extends JComponent {
                               + 0.11 * (c >>  0 & 0xff)) / 255.0;
                 sum = 1.0 - sum;
                 double size = sum * SQ2;
-                g.fill(new Ellipse2D.Double((double) x * 3.5 - size,
-                                            (double) y * 3.6 - size,
-                                            size * 3.5, size * 3.5));
-                // g.drawOval((int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
-                // fillMidpointEllipse(g, (int)(Math.ceil(x * 2 - size)), (int)(Math.ceil(y * 2 - size)), (int)(Math.ceil(size * 2)), (int)(Math.ceil(size * 2)));
-                
-                if((int)(/* Math.round */(size * 2)) != 0.0f) {
-                    fileOut.printf("midpointEllipse(g2, %d, %d, %d, %d);\n", (int)((double) x * 3.5 - size), (int)((double) y * 3.6 - size), (int)(size * 3.5), (int)(size * 3.5));
-                    // fileOut.printf("%d %d %d %d\n", (int)((double) x * 2 - size), (int)((double) y * 2 - size), (int)(size * 2), (int)(size * 2));
+                if(size * 3.5 != 0.0f) {
+                   /*  g.fill(new Ellipse2D.Double((double) x * 3.5 - size,
+                                                (double) y * 3.6 - size,
+                                                size * 3.5, size * 3.5)); */
+                    // g.drawOval((int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
+                    midpointEllipse(g, (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
+                // if(size * 3.5 != 0.0f) {
+                    // fileOut.printf("midpointEllipse(g2, %d, %d, %d, %d);\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
+                    fileOut.printf("%d %d %d %d\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
+                    fileOutOrigin.printf("%f %f %f %f\n", (double) x * 3.5 - size, (double) y * 3.6 - size, size * 3.5, size * 3.5);
+                    
                 }
             }
-        } fileOut.close();
+        } fileOut.close();  fileOutOrigin.close();
+        
     }
 
 
@@ -135,10 +142,10 @@ public class Halftone extends JComponent {
         d = Math.round(b * b - a * a * b + a * a / 4);
 
         while(b * b * x <= a * a * y) {
-            plot(g, x + xc, y + yc, 3);
-            plot(g, -x + xc, y + yc, 3);
-            plot(g, x + xc, -y + yc, 3);
-            plot(g, -x + xc, -y + yc, 3);
+            plot(g, x + xc, y + yc, 1);
+            plot(g, -x + xc, y + yc, 1);
+            plot(g, x + xc, -y + yc, 1);
+            plot(g, -x + xc, -y + yc, 1);
 
             x++;
             d = d + 2 * b * b * x + b * b;
@@ -155,10 +162,10 @@ public class Halftone extends JComponent {
         d = Math.round(a * a - b * b * a + b * b / 4);
 
         while(b * b * x >= a * a * y) {
-            plot(g, x + xc, y + yc, 3);
-            plot(g, -x + xc, y + yc, 3);
-            plot(g, x + xc, -y + yc, 3);
-            plot(g, -x + xc, -y + yc, 3);
+            plot(g, x + xc, y + yc, 1);
+            plot(g, -x + xc, y + yc, 1);
+            plot(g, x + xc, -y + yc, 1);
+            plot(g, -x + xc, -y + yc, 1);
 
             y++;
             d = d + 2 * a * a * y + a * a;
@@ -167,11 +174,6 @@ public class Halftone extends JComponent {
                 x--;
                 d = d - 2 * b * b * x;
             }
-        }
-    }
-    public void fillMidpointEllipse(Graphics g, int xc, int yc, int a, int b) {
-        for(int i = 0; i <= a; i++) {
-            midpointEllipse(g, xc, yc, a, b);
         }
     }
     public void plot(Graphics g, int x, int y, int size) {
