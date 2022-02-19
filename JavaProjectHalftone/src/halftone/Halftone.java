@@ -33,12 +33,10 @@ public class Halftone extends JComponent {
     private static final double DISP_SCALE = 1.2;
 
     public static Scanner scn = new Scanner(System.in);
-    public static PrintWriter fileOut;
-    public static PrintWriter fileOutOrigin;
+    // public static PrintWriter fileOut;
 
     public static void main(String[] args) throws IOException {
-        fileOut = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfImage.txt");
-        fileOutOrigin = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfImageOrigin.txt");
+        // fileOut = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfImage1.txt");
         
         JFrame frame = new JFrame();
         frame.add(new Halftone());
@@ -62,7 +60,7 @@ public class Halftone extends JComponent {
 
     private void setDefaultImage()  {
         try {
-            URL res = Halftone.class.getResource("/halftone/1 (1).png");
+            URL res = Halftone.class.getResource("/halftone/5 (1).png");
             // URL res = Halftone.class.getResource("/halftone/1.png");
             // URL res = Halftone.class.getResource("/halftone/lenna.png");
             setImage(ImageIO.read(res));
@@ -122,13 +120,11 @@ public class Halftone extends JComponent {
                     midpointEllipse(g, (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
                 // if(size * 3.5 != 0.0f) {
                     // fileOut.printf("midpointEllipse(g2, %d, %d, %d, %d);\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
-                    fileOut.printf("%d %d %d %d\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
-                    fileOutOrigin.printf("%f %f %f %f\n", (double) x * 3.5 - size, (double) y * 3.6 - size, size * 3.5, size * 3.5);
-                    
+                    // fileOut.printf("%d %d %d %d\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
                 }
             }
-        } fileOut.close();  fileOutOrigin.close();
-        
+        } 
+        //fileOut.close();
     }
 
 

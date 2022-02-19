@@ -16,6 +16,8 @@ import java.io.PrintWriter;
 public class FaceTest extends JPanel implements Runnable {
     public static BufferedImage buffer;
     static Scanner scn = new Scanner(System.in);
+    static Scanner fileIn;
+    static String fileInPathPerFrame;
 
     double circleMove = 0.0f;
     double squareRotate = 0.0f;
@@ -28,7 +30,7 @@ public class FaceTest extends JPanel implements Runnable {
 
 		JFrame frame = new JFrame();
 		frame.add(m);
-		frame.setTitle("First Swing");
+		frame.setTitle("Animation Hell Yeah");
 		frame.setSize(600, 600);
         frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,8 +39,9 @@ public class FaceTest extends JPanel implements Runnable {
         (new Thread(m)).start();
 	}
     public void run() {
-        double currentTime, elapsedTime;
+        double currentTime, elapsedTime, keyFrameTime = 0;
         double lastTime = System.currentTimeMillis();
+        
 
         while(true) {
             //control time
@@ -47,29 +50,21 @@ public class FaceTest extends JPanel implements Runnable {
             lastTime = currentTime;
             
             //update
-            /* circleMove += 50.0 * elapsedTime / 1000.0;
-            squareRotate += 0.5 * elapsedTime / 1000.0; */
+            keyFrameTime += elapsedTime / 1000.0;
+            if(keyFrameTime == 0.0f) {
+                fileInPathPerFrame = "src/halftone/xyOfImage1.txt";
+            } else if(keyFrameTime >= 2.0f && keyFrameTime < 2.1f) {
+                fileInPathPerFrame = "src/halftone/xyOfImage2.txt";
+            } else if(keyFrameTime >= 4.0f) {
+                fileInPathPerFrame = "src/halftone/xyOfImage4.txt";
+            }
             
             //display
-            // repaint();
-        }
-    }
-    public void reader(int[][] coor) throws IOException {
-        String[] line;
-        Scanner fileIn = new Scanner(new FileReader("/halftone/xyOfImage.txt"));
-        while(fileIn.hasNextLine()) {
-            for(int i = 0; i < coor.length; i++) {
-                line = scn.nextLine().trim().split(" ");
-                for(int j = 0; j < coor[0].length; j++) {
-                    coor[i][j] = Integer.parseInt(line[j]);
-                }
-            }
+            repaint();
         }
     }
 	@Override
 	public void paintComponent(Graphics g) {
-        buffer = new BufferedImage(601, 601, BufferedImage.TYPE_INT_ARGB);
-        // Graphics2D g2 = buffer.createGraphics();
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, 600, 600);
@@ -82,29 +77,36 @@ public class FaceTest extends JPanel implements Runnable {
         g2.drawRect(200, 200, 200, 200); */
         
         // g.drawImage(buffer, 0, 0, null);
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                           RenderingHints.VALUE_ANTIALIAS_ON);
-        g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-                           RenderingHints.VALUE_STROKE_PURE);
-        g2.setRenderingHint(RenderingHints.KEY_RENDERING,
-                           RenderingHints.VALUE_RENDER_QUALITY);
-
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        // g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        // g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
+        
         g2.setColor(Color.black);
         try {
-            Scanner fileIn = new Scanner(new FileReader("src/halftone/xyOfImage.txt"));
+            fileIn = new Scanner(new FileReader(fileInPathPerFrame));
             while(fileIn.hasNextLine()) {
                 int xc = fileIn.nextInt();
                 int yc = fileIn.nextInt();
                 int a = fileIn.nextInt();
                 int b = fileIn.nextInt();
-                // midpointEllipse(g2, xc, yc, a, b);
-                midpointCircle(g2, xc, yc, a);
+                midpointEllipse(g2, xc, yc, a, b);
+                // midpointCircle(g2, xc, yc, a);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        // g.drawImage(buffer, 0, 0, null);
+    }
+    public void reader(int[][] coor) throws IOException {
+        String[] line;
+        Scanner fileIn22222 = new Scanner(new FileReader("/halftone/xyOfImage.txt"));
+        while(fileIn22222.hasNextLine()) {
+            for(int i = 0; i < coor.length; i++) {
+                line = scn.nextLine().trim().split(" ");
+                for(int j = 0; j < coor[0].length; j++) {
+                    coor[i][j] = Integer.parseInt(line[j]);
+                }
+            }
+        }
     }
     public void midpointCircle(Graphics g, int xc, int yc, int r) {
         int x = 0;
