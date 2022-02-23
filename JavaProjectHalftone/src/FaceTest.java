@@ -65,16 +65,21 @@ public class FaceTest extends JPanel implements Runnable {
             } else if(keyFrameTime >= 10.0f && keyFrameTime < 10.1f) {
                 fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage5.txt";
             } */
-
+            
+            
             if(keyFrameTime == 0.0f) {
                 fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage1.txt";
-                halftime += 2.5f;
+                halftime += 2.50f;
                 numberFileIn++;
+                System.out.println("Hello World " + keyFrameTime);
             } else if(keyFrameTime >= halftime) {
                 fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage" + numberFileIn + ".txt";
+                halftime += 2.50f;
                 numberFileIn++;
-                halftime += 2.5f;
+                System.out.println("Hello World");
             }
+            /* halftime += 2.5f;
+            numberFileIn++; */
             
             
             // System.out.println(rotate2);
