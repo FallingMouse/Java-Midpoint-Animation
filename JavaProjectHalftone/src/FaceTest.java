@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
 
 import java.util.Scanner;
 import java.io.FileReader;
@@ -13,7 +12,7 @@ public class FaceTest extends JPanel implements Runnable {
     static Scanner fileInFace, fileInClockNumber, scn = new Scanner(System.in);
     static String fileInPathPerFrame;
 
-    int numberFileIn = 1;
+    int numberFileIn = 0;
 
     double halftime = 0.0f;
     double circleMove = 0.0f;
@@ -68,15 +67,16 @@ public class FaceTest extends JPanel implements Runnable {
             
             
             if(keyFrameTime == 0.0f) {
-                fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage1.txt";
-                halftime += 2.50f;
-                numberFileIn++;
-                System.out.println("Hello World " + keyFrameTime);
-            } else if(keyFrameTime >= halftime) {
                 fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage" + numberFileIn + ".txt";
                 halftime += 2.50f;
                 numberFileIn++;
-                System.out.println("Hello World");
+                System.out.printf("Assignment2 ver %.1f\n", keyFrameTime);
+            } else if(keyFrameTime >= halftime) {
+                if(numberFileIn <= 20) {
+                    fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage" + numberFileIn + ".txt";
+                    halftime += 2.50f;
+                    numberFileIn++;
+                } else fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage20.txt";
             }
             /* halftime += 2.5f;
             numberFileIn++; */
