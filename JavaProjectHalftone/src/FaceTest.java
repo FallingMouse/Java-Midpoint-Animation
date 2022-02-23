@@ -47,24 +47,12 @@ public class FaceTest extends JPanel implements Runnable {
             
             //update
             rotate1 += 0.05 * elapsedTime / 1000.0;
-            rotate2 += 0.6 * elapsedTime / 1000.0;
+            rotate2 += 0.58 * elapsedTime / 1000.0;
             // ^---- keyFrameTime % 2.5 == 0
             /* rotate1 += 0.10 * elapsedTime / 1000.0; 
             rotate2 += 1.2 * elapsedTime / 1000.0; */
 
             keyFrameTime += elapsedTime / 1000.0;
-            /* if(keyFrameTime == 0.0f) {
-                fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage1.txt";
-            } else if(keyFrameTime >= 2.5f && keyFrameTime < 2.6f) {
-                fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage2.txt";
-            } else if(keyFrameTime >= 5.0f && keyFrameTime < 5.1f) {
-                fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage3.txt";
-            } else if(keyFrameTime >= 7.5f && keyFrameTime < 7.6f) {
-                fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage4.txt";
-            } else if(keyFrameTime >= 10.0f && keyFrameTime < 10.1f) {
-                fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage5.txt";
-            } */
-            
             
             if(keyFrameTime == 0.0f) {
                 fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage" + numberFileIn + ".txt";
@@ -78,12 +66,6 @@ public class FaceTest extends JPanel implements Runnable {
                     numberFileIn++;
                 } else fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage20.txt";
             }
-            /* halftime += 2.5f;
-            numberFileIn++; */
-            
-            
-            // System.out.println(rotate2);
-            // System.out.println(keyFrameTime);
 
             //display
             repaint();
@@ -96,8 +78,6 @@ public class FaceTest extends JPanel implements Runnable {
         g2.fillRect(0, 0, 600, 600);
         
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        // g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        // g2.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
         
         g2.setColor(Color.black);
         try {
