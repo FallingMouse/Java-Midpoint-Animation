@@ -46,8 +46,8 @@ public class FaceTest extends JPanel implements Runnable {
             lastTime = currentTime;
             
             //update
-            rotate1 += 0.05 * elapsedTime / 1000.0;
-            rotate2 += 0.58 * elapsedTime / 1000.0;
+            rotate1 += 0.1 * elapsedTime / 1000.0;
+            rotate2 += 1.16 * elapsedTime / 1000.0;
             // ^---- keyFrameTime % 2.5 == 0
             /* rotate1 += 0.10 * elapsedTime / 1000.0; 
             rotate2 += 1.2 * elapsedTime / 1000.0; */
@@ -56,13 +56,13 @@ public class FaceTest extends JPanel implements Runnable {
             
             if(keyFrameTime == 0.0f) {
                 fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage" + numberFileIn + ".txt";
-                halftime += 2.50f;
+                halftime += 1.25f;
                 numberFileIn++;
                 System.out.printf("Assignment2 ver %.1f\n", keyFrameTime);
             } else if(keyFrameTime >= halftime) {
                 if(numberFileIn <= 20) {
                     fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage" + numberFileIn + ".txt";
-                    halftime += 2.50f;
+                    halftime += 1.25f;
                     numberFileIn++;
                 } else fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage20.txt";
             }
