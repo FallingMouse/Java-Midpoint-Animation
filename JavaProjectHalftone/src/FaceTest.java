@@ -1,27 +1,24 @@
-import javax.swing.*;
+import java.util.Scanner;
 import java.awt.*;
-import java.awt.image.BufferedImage;
+import javax.swing.*;
+import java.io.FileReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import java.util.Scanner;
-import java.io.FileReader;
-
 public class FaceTest extends JPanel implements Runnable {
-    public static BufferedImage buffer;
-    static Scanner fileInFace, fileInClockNumber, scn = new Scanner(System.in);
-    static String fileInPathPerFrame;
-
-    int numberFileIn = 0;
-
+    static Scanner fileInFace, fileInClockNumber;
+    static Scanner scn = new Scanner(System.in);
+    
     double halftime = 0.0f;
     double circleMove = 0.0f;
     double squareRotate = 0.0f;
     double rotate1 = 0.0f, rotate2 = 0.0f;
     double x = 0, y = 550;
-
     double velocity = 50;
     double angle = -60;
+    
+    String fileInPathPerFrame;
+
     public static void main(String[] args) throws IOException {
 		FaceTest m = new FaceTest();
 
@@ -36,6 +33,7 @@ public class FaceTest extends JPanel implements Runnable {
         (new Thread(m)).start();
 	}
     public void run() {
+        int numberFileIn = 0;
         double currentTime, elapsedTime, keyFrameTime = 0;
         double lastTime = System.currentTimeMillis();
 
@@ -47,7 +45,7 @@ public class FaceTest extends JPanel implements Runnable {
             
             //update
             rotate1 += 0.1 * elapsedTime / 1000.0;
-            rotate2 += 1.16 * elapsedTime / 1000.0;
+            rotate2 += 1.125 * elapsedTime / 1000.0;
             // ^---- keyFrameTime % 2.5 == 0
             /* rotate1 += 0.10 * elapsedTime / 1000.0; 
             rotate2 += 1.2 * elapsedTime / 1000.0; */
@@ -56,15 +54,22 @@ public class FaceTest extends JPanel implements Runnable {
             
             if(keyFrameTime == 0.0f) {
                 fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage" + numberFileIn + ".txt";
-                halftime += 1.25f;
+                halftime += 0.625f;
                 numberFileIn++;
                 System.out.printf("Assignment2 ver %.1f\n", keyFrameTime);
             } else if(keyFrameTime >= halftime) {
-                if(numberFileIn <= 20) {
+                if(numberFileIn <= 40) {
                     fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage" + numberFileIn + ".txt";
-                    halftime += 1.25f;
+                    // System.out.println(numberFileIn);
+                    halftime += 0.625f;
                     numberFileIn++;
-                } else fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage20.txt";
+                } else {
+                    fileInPathPerFrame = "src/halftone/xyPosition/xyOfImage40.txt";
+                    System.out.printf("Za Warudo!!!\nThread Killed!\n");
+
+                    //Stop Thread
+                    return; 
+                }
             }
 
             //display
@@ -107,22 +112,19 @@ public class FaceTest extends JPanel implements Runnable {
 
         //--clockwise--
         g2.rotate(rotate1, 300, 300);
-        //small hand
-        for (int i = 1; i < 35; i++)
-        {
+        
+        for (int i = 1; i < 35; i++) {      //small hand
             fillMidpointCircle(g2, 300, (302 - (i * 2)), 4);
         }
         g2.rotate(rotate2, 300, 300);
-        //minute hand
-        for (int i = 1; i < 90; i++)
-        {
+        
+        for (int i = 1; i < 90; i++) {      //minute hand
             fillMidpointCircle(g2, 300, (302 - (i * 2)), 4);
         }
 
         fillMidpointCircle(g2, 300, 300, 6);
         g2.setColor(Color.WHITE);
         fillMidpointCircle(g2, 300, 300, 3);
-
     }
     public void midpointCircle(Graphics g, int xc, int yc, int r) {
         int x = 0;
