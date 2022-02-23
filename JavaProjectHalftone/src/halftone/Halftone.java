@@ -33,10 +33,10 @@ public class Halftone extends JComponent {
     private static final double DISP_SCALE = 1.2;
 
     public static Scanner scn = new Scanner(System.in);
-    // public static PrintWriter fileOut;
+    public static PrintWriter fileOut;
 
     public static void main(String[] args) throws IOException {
-        // fileOut = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfImage1.txt");
+        fileOut = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfClockNumber.txt");
         
         JFrame frame = new JFrame();
         frame.add(new Halftone());
@@ -60,7 +60,7 @@ public class Halftone extends JComponent {
 
     private void setDefaultImage()  {
         try {
-            URL res = Halftone.class.getResource("/halftone/5 (1).png");
+            URL res = Halftone.class.getResource("/halftone/Num5.png");
             // URL res = Halftone.class.getResource("/halftone/1.png");
             // URL res = Halftone.class.getResource("/halftone/lenna.png");
             setImage(ImageIO.read(res));
@@ -117,19 +117,46 @@ public class Halftone extends JComponent {
                                                 (double) y * 3.6 - size,
                                                 size * 3.5, size * 3.5)); */
                     // g.drawOval((int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
-                    midpointEllipse(g, (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
+                    fillMidpointCircle(g, (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)));
                 // if(size * 3.5 != 0.0f) {
                     // fileOut.printf("midpointEllipse(g2, %d, %d, %d, %d);\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
                     // fileOut.printf("%d %d %d %d\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
+                    fileOut.printf("%d %d %d\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)));
                 }
             }
-        } 
-        //fileOut.close();
+        }
+        fileOut.close();
     }
 
+    public void midpointCircle(Graphics g, int xc, int yc, int r) {
+        int x = 0;
+        int y = r;
+        int d = 1 - r;
+        int dx = 2 * x;
+        int dy = 2 * y;
 
+        while(x <= y) {
+            plot(g, x + xc, y + yc, 1);
+            plot(g, -x + xc, y + yc, 1);
+            plot(g, x + xc, -y + yc, 1);
+            plot(g, -x + xc, -y + yc, 1);
+            plot(g, y + xc, x + yc, 1);
+            plot(g, -y + xc, x + yc, 1);
+            plot(g, y + xc, -x + yc, 1);
+            plot(g, -y + xc, -x + yc, 1);
+            x++;
 
+            dx += 2;
 
+            d = d + dx + 1;
+
+            if(d >= 0) {
+                y--;
+                dy -= 2;
+                d = d - dy;
+            }
+        }
+    }
     public void midpointEllipse(Graphics g, int xc, int yc, int a, int b) { //a, b = radius
         //region 1
         int x, y, d;
@@ -170,6 +197,11 @@ public class Halftone extends JComponent {
                 x--;
                 d = d - 2 * b * b * x;
             }
+        }
+    }
+    public void fillMidpointCircle(Graphics g, int xc, int yc, int r) {
+        for(int i = 0; i <= r; i++) {
+            midpointCircle(g, xc, yc, i);
         }
     }
     public void plot(Graphics g, int x, int y, int size) {

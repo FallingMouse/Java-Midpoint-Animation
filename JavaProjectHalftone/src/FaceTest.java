@@ -12,15 +12,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-//63050103 นายแก้วเพชร หนูร่วง
 public class FaceTest extends JPanel implements Runnable {
     public static BufferedImage buffer;
-    static Scanner scn = new Scanner(System.in);
-    static Scanner fileIn;
+    static Scanner fileInFace, fileInClockNumber, scn = new Scanner(System.in);
     static String fileInPathPerFrame;
 
     double circleMove = 0.0f;
     double squareRotate = 0.0f;
+    double rotate1 = 0.0f, rotate2 = 0.0f;
     double x = 0, y = 550;
 
     double velocity = 50;
@@ -41,7 +40,6 @@ public class FaceTest extends JPanel implements Runnable {
     public void run() {
         double currentTime, elapsedTime, keyFrameTime = 0;
         double lastTime = System.currentTimeMillis();
-        
 
         while(true) {
             //control time
@@ -50,12 +48,15 @@ public class FaceTest extends JPanel implements Runnable {
             lastTime = currentTime;
             
             //update
+            rotate1 += 0.05 * elapsedTime / 1000.0;
+            rotate2 += 0.6 * elapsedTime / 1000.0;
+
             keyFrameTime += elapsedTime / 1000.0;
             if(keyFrameTime == 0.0f) {
                 fileInPathPerFrame = "src/halftone/xyOfImage1.txt";
-            } else if(keyFrameTime >= 2.0f && keyFrameTime < 2.1f) {
+            } else if(keyFrameTime >= 2.2f && keyFrameTime < 2.3f) {
                 fileInPathPerFrame = "src/halftone/xyOfImage2.txt";
-            } else if(keyFrameTime >= 4.0f) {
+            } else if(keyFrameTime >= 4.2f) {
                 fileInPathPerFrame = "src/halftone/xyOfImage4.txt";
             }
             
@@ -65,6 +66,8 @@ public class FaceTest extends JPanel implements Runnable {
     }
 	@Override
 	public void paintComponent(Graphics g) {
+        /* BufferedImage buffer = new BufferedImage(601, 601, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = buffer.createGraphics(); */
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, 600, 600);
@@ -83,30 +86,55 @@ public class FaceTest extends JPanel implements Runnable {
         
         g2.setColor(Color.black);
         try {
-            fileIn = new Scanner(new FileReader(fileInPathPerFrame));
-            while(fileIn.hasNextLine()) {
-                int xc = fileIn.nextInt();
-                int yc = fileIn.nextInt();
-                int a = fileIn.nextInt();
-                int b = fileIn.nextInt();
+            fileInFace = new Scanner(new FileReader(fileInPathPerFrame));
+            while(fileInFace.hasNextLine()) {
+                int xc = fileInFace.nextInt();
+                int yc = fileInFace.nextInt();
+                int a = fileInFace.nextInt();
+                int b = fileInFace.nextInt();
                 midpointEllipse(g2, xc, yc, a, b);
                 // midpointCircle(g2, xc, yc, a);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-    public void reader(int[][] coor) throws IOException {
-        String[] line;
-        Scanner fileIn22222 = new Scanner(new FileReader("/halftone/xyOfImage.txt"));
-        while(fileIn22222.hasNextLine()) {
-            for(int i = 0; i < coor.length; i++) {
-                line = scn.nextLine().trim().split(" ");
-                for(int j = 0; j < coor[0].length; j++) {
-                    coor[i][j] = Integer.parseInt(line[j]);
-                }
+        g2.setColor(Color.black);
+        try {
+            fileInClockNumber = new Scanner(new FileReader("src/halftone/xyOfClockNumber.txt"));
+            while(fileInClockNumber.hasNextLine()) {
+                int xc = fileInClockNumber.nextInt();
+                int yc = fileInClockNumber.nextInt();
+                int a = fileInClockNumber.nextInt();
+                fillMidpointCircle(g2, xc, yc, a);
             }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
+        //--clockwise--
+        g2.rotate(rotate1, 300, 300);
+        for (int i = 1; i < 35; i++)
+        {
+            fillMidpointCircle(g2, (298 + (i * 2)), (302 - (i * 2)), 4);
+        }
+
+        g2.rotate(rotate2, 300, 300);
+        for (int i = 1; i < 90; i++)
+        {
+            fillMidpointCircle(g2, 300, (302 - (i * 2)), 4);
+        }
+
+        fillMidpointCircle(g2, 300, 300, 6);
+        g2.setColor(Color.WHITE);
+        fillMidpointCircle(g2, 300, 300, 3);
+
+        /* g2.setColor(Color.BLACK);
+        for (int i = 1; i < 100; i++) {
+            g2.rotate(rotate, 300, 300);
+            midpointCircle(g2, (304 - (i * 4)), 300, (1 + (i/2)));
+            // midpointCircle(g2, 300, (296 + (i * 4)), (1 + (i/2)));
+            fillMidpointCircle(g2, (304 - (i * 4)), 300, (1 + (i/2)));
+            // fillMidpointCircle(g2, 300, (296 + (i * 4)), (1 + (i/2)));
+        } */
     }
     public void midpointCircle(Graphics g, int xc, int yc, int r) {
         int x = 0;
