@@ -36,7 +36,7 @@ public class Halftone extends JComponent {
     public static PrintWriter fileOut;
 
     public static void main(String[] args) throws IOException {
-        fileOut = new PrintWriter("C:\\Users\\kewph\\Documents\\GitHub\\JavaProjectHT\\JavaProjectHalftone\\src\\halftone\\xyOfClockNumber.txt");
+        fileOut = new PrintWriter("src/halftone/xyPosition/xyOfClockNumber.txt");
         
         JFrame frame = new JFrame();
         frame.add(new Halftone());
@@ -60,7 +60,7 @@ public class Halftone extends JComponent {
 
     private void setDefaultImage()  {
         try {
-            URL res = Halftone.class.getResource("/halftone/Num5.png");
+            URL res = Halftone.class.getResource("/halftone/ImageHT/Image1.png");
             // URL res = Halftone.class.getResource("/halftone/1.png");
             // URL res = Halftone.class.getResource("/halftone/lenna.png");
             setImage(ImageIO.read(res));
@@ -120,8 +120,8 @@ public class Halftone extends JComponent {
                     fillMidpointCircle(g, (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)));
                 // if(size * 3.5 != 0.0f) {
                     // fileOut.printf("midpointEllipse(g2, %d, %d, %d, %d);\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
-                    // fileOut.printf("%d %d %d %d\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
-                    fileOut.printf("%d %d %d\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)));
+                    fileOut.printf("%d %d %d %d\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)), (int)(Math.ceil(size * 3.5)));
+                    // fileOut.printf("%d %d %d\n", (int)(Math.ceil(x * 3.5 - size)), (int)(Math.ceil(y * 3.6 - size)), (int)(Math.ceil(size * 3.5)));
                 }
             }
         }
