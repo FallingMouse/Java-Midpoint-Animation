@@ -36,7 +36,7 @@ public class Halftone extends JComponent {
     public static PrintWriter fileOut;
 
     public static void main(String[] args) throws IOException {
-        fileOut = new PrintWriter("src/halftone/xyPosition/xyOfImage39.txt");
+        fileOut = new PrintWriter("src/halftone/xyPosition/xyOfImage7.txt");
         
         JFrame frame = new JFrame();
         frame.add(new Halftone());
@@ -60,7 +60,7 @@ public class Halftone extends JComponent {
 
     private void setDefaultImage()  {
         try {
-            URL res = Halftone.class.getResource("/halftone/ImageHT/Image39.png");
+            URL res = Halftone.class.getResource("/halftone/ImageHT/Image7.png");
             // URL res = Halftone.class.getResource("/halftone/1.png");
             // URL res = Halftone.class.getResource("/halftone/lenna.png");
             setImage(ImageIO.read(res));
