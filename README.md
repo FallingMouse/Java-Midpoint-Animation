@@ -2,7 +2,7 @@
 An animation created with Java **Swing** by using **midpoint algorithms**.
 
 ### Animation 🎬
-https://user-images.githubusercontent.com/66639008/155828124-d2bf5714-2bd8-4bd5-9788-bb8e074fc19e.mp4
+![Young-To-Old-Animation](https://user-images.githubusercontent.com/66639008/155828378-1023496a-ffbe-49a3-a0c4-3a2cf43d6421.gif)
 
 ## Reference 📎
 Thank you, 
